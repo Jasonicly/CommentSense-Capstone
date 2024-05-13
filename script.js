@@ -1,16 +1,21 @@
 (() => {
   let youtubeLeftControls, youtubePlayer;
-  let currentVideo = "";
-  let currentVideoBookmarks = [];
+  let currentReport = "";
+  let currentBookmarks = [];
+
+  const pressTranslateButton = () => {
+    const translateButton = document.getElementById('a-button-input');
+    translateButton.click();
+  }
 
   const fetchBookmarks = () => {
     return new Promise((resolve) => {
-      chrome.storage.sync.get([currentVideo], (obj) => {
-        resolve(obj[currentVideo] ? JSON.parse(obj[currentVideo]) : []);
+      chrome.storage.sync.get([currentReport], (obj) => {
+        resolve(obj[currentReport] ? JSON.parse(obj[currentReport]) : []);
       });
     });
   };
-
+ 
   const addNewBookmarkEventHandler = async () => {
     const currentTime = youtubePlayer.currentTime;
     const newBookmark = {
@@ -18,17 +23,17 @@
       desc: "Bookmark at " + getTime(currentTime),
     };
 
-    currentVideoBookmarks = await fetchBookmarks();
+    currentReportBookmarks = await fetchBookmarks();
 
     chrome.storage.sync.set({
-      [currentVideo]: JSON.stringify([...currentVideoBookmarks, newBookmark].sort((a, b) => a.time - b.time))
+      [currentReport]: JSON.stringify([...currentReportBookmarks, newBookmark].sort((a, b) => a.time - b.time))
     });
   };
 
   const newVideoLoaded = async () => {
     const bookmarkBtnExists = document.getElementsByClassName("bookmark-btn")[0];
 
-    currentVideoBookmarks = await fetchBookmarks();
+    currentReportBookmarks = await fetchBookmarks();
 
     if (!bookmarkBtnExists) {
       const bookmarkBtn = document.createElement("img");
@@ -49,15 +54,15 @@
     const { type, value, videoId } = obj;
 
     if (type === "NEW") {
-      currentVideo = videoId;
+      currentReport = videoId;
       newVideoLoaded();
     } else if (type === "PLAY") {
       youtubePlayer.currentTime = value;
     } else if ( type === "DELETE") {
-      currentVideoBookmarks = currentVideoBookmarks.filter((b) => b.time != value);
-      chrome.storage.sync.set({ [currentVideo]: JSON.stringify(currentVideoBookmarks) });
+      currentReportBookmarks = currentReportBookmarks.filter((b) => b.time != value);
+      chrome.storage.sync.set({ [currentReport]: JSON.stringify(currentReportBookmarks) });
 
-      response(currentVideoBookmarks);
+      response(currentReportBookmarks);
     }
   });
 
@@ -70,3 +75,5 @@ const getTime = t => {
 
   return date.toISOString().substr(11, 8);
 };
+
+ 
