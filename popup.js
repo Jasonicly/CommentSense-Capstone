@@ -1,6 +1,6 @@
-import { getActiveTabURL } from "./utils.js";
+import { getActiveTabURL } from "./utilities.js";
 
-const addNewBookmark = (bookmarks, bookmark) => {
+const addNewBookmark = (reports, bookmark) => {
   const bookmarkTitleElement = document.createElement("div");
   const controlsElement = document.createElement("div");
   const newBookmarkElement = document.createElement("div");
@@ -31,7 +31,7 @@ const viewBookmarks = (currentBookmarks=[]) => {
       addNewBookmark(bookmarksElement, bookmark);
     }
   } else {
-    bookmarksElement.innerHTML = '<i class="row">No bookmarks to show</i>';
+    bookmarksElement.innerHTML = '<i class="row">History is empty</i>';
   }
 
   return;
