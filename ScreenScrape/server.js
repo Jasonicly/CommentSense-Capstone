@@ -14,7 +14,7 @@ app.get('/', (req, res) => {
 
 app.post('/scrape', async (req, res) => {
     try {
-        const url = req.body.url; // Make sure you're reading the URL from the POST body
+        const url = req.body.url; // Make sure reading the URL from the POST body
         console.log('Received URL for scraping:', url);
         
         if (!url) {
@@ -31,7 +31,9 @@ app.post('/scrape', async (req, res) => {
             }
             console.log('Reviews saved to', filePath);
             res.json(reviews);
+
         });
+
     } catch (error) {
         console.error("Error during scraping:", error);
         res.status(500).send('Error during scraping: ' + error.message);

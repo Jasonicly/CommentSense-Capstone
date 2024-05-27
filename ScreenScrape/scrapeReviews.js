@@ -65,7 +65,6 @@ async function scrapeReviews(initialUrl) {
             currentPageUrl = null;
         }
     }
-
     await browser.close();
     return results;
 }

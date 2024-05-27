@@ -23,6 +23,7 @@ document.getElementById('startScrape').addEventListener('click', function() {
             .catch(error => {
                 console.error('Error starting scrape:', error);
             });
+            alert('Scraping started!');
         }
     });
 });
